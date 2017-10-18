@@ -35,29 +35,27 @@ struct Movies {
             debugPrint(response)
             
             DispatchQueue.global().async {
-                if let json = response.result.value {
-                    
-                    if let result = response.result.value as? Dictionary <String, AnyObject> {
-                        if let list  = result["results"] as? [Dictionary<String, AnyObject>] {
-                            for obj in list {
-                                guard let title = obj["title"] else { return }
-                                guard let overview = obj["overview"] else { return }
-                                guard let releaseDate = obj["release_date"] else { return }
-                                guard let voteCount = obj["vote_count"] else { return }
-                                guard let posterPath = obj["poster_path"] else { return }
-                                
-                                movies.append(Movies(title: title as! String, overView: overview as! String, releaseDate: releaseDate as! String, voteCount: voteCount as! NSNumber, posterPath: posterPath as! String))
-                                self.movieList = movies
-                            }
+                if let result = response.result.value as? Dictionary <String, AnyObject> {
+                    if let list  = result["results"] as? [Dictionary<String, AnyObject>] {
+                        for obj in list {
+                            guard let title = obj["title"] else { return }
+                            guard let overview = obj["overview"] else { return }
+                            guard let releaseDate = obj["release_date"] else { return }
+                            guard let voteCount = obj["vote_count"] else { return }
+                            guard let posterPath = obj["poster_path"] else { return }
+                            
+                            movies.append(Movies(title: title as! String, overView: overview as! String, releaseDate: releaseDate as! String, voteCount: voteCount as? NSNumber, posterPath: posterPath as? String))
+                            self.movieList = movies
                         }
                     }
-                    DispatchQueue.main.async {
-                        completed()
-                    }
                 }
-                
+                DispatchQueue.main.async {
+                    completed()
+                }
             }
             
         }
+        
+        
     }
 }
