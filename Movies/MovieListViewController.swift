@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MovieListViewController.swift
 //  Movies
 //
 //  Created by Kacper Kowalski on 18.10.2017.
@@ -8,14 +8,20 @@
 
 import UIKit
 
-class ViewController: UITableViewController {
+class MovieListViewController: UITableViewController {
 
+    static let cellIdentifier = "cellID"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         self.title = "MOVIE LIST"
+        tableView.register(MovieCell.self, forCellReuseIdentifier: MovieListViewController.cellIdentifier)
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        //
 
     }
     
