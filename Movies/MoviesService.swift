@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import Alamofire
 
+var request: Alamofire.Request?
 
 class Movies {
     
@@ -39,7 +41,18 @@ class Movies {
     
     class func downloadMovieList(_ completed: @escaping MoviesNowPlayingCompletionHandler) {
         
-        let url = URL(string: Movies.endPoint + Movies.APIKey)
+        let url = URL(string: Movies.endPoint + Movies.APIKey)!
         
-    }
-} 
+        request = Alamofire.request(url).responseJSON { response in
+            debugPrint(response)
+            
+            DispatchQueue.global().async {
+                if let json = response.result.value {
+                    print("WE GOT SOME JSON: \(json)")
+                }
+            }
+            completed()
+        }
+        
+    } 
+}
