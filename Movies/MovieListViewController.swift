@@ -12,7 +12,7 @@ import Kingfisher
 class MovieListViewController: UITableViewController {
 
     static let cellIdentifier = "cellID"
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,24 +28,31 @@ class MovieListViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-
     }
     
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        //
-//    }
-//    
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        //
-//        return 1
-//    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieListViewController.cellIdentifier, for: indexPath) as? MovieCell else {
+            fatalError()
+        }
+        
+        let movie = Movies.movieList[indexPath.row]
+        
+        // this path is provided by API docs.
+        let imagePath = "https://image.tmdb.org/t/p/w342" + movie.posterPath!
+        let url = URL(string: String(imagePath))
+        cell.movieImageView.kf.setImage(with: url)
+        
+        cell.movieTitleLabel.text = movie.title.uppercased()
+        cell.dateLabel.text = "Release Date: " + movie.releaseDate
+        cell.descriptionLabel.text = movie.overView
+        if let voteCount = movie.voteCount {
+            cell.reviewsCountLabel.text = "Number of Reviews \(voteCount)"
+        }
+        return cell
+    }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Movies.movieList.count
+    }
     
-    
-    
-    
-    
-    
-
 }
-
